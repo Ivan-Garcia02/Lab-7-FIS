@@ -15,10 +15,10 @@ class User {
   std::string GetEmail(void) const {return email_;}
 
   void SetPetitions(std::vector<bool> petitions) {petitions_ = petitions; return;}
-  
+
   /// Comprobar contraseña
   bool CheckPassword(const std::string& password) {return (password == this->password_);}
-
+  void ManagePetitions(void);
  private:
   std::string username_;
   std::string password_;

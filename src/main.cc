@@ -19,12 +19,12 @@ bool CheckPassword(std::string&);
 
 int main() {
 
-  // Info_Dorf();
+  Info_Dorf();
   std::string user_file{"../users.txt"};
   System system{user_file, ""};
   
   Register_Login(system);
-
+  
   return 0;
 }
 
@@ -55,12 +55,13 @@ void Register_Login(const System& system) {
     std::cerr << "Opcion incorrecta. Introduzcala de nuevo: ";
     std::cin >> opc;
   }
-
+  std::system("clear");
   if(opc) {
     Login(system);
   } else {
     Register(system);
   }
+  std::cout << "Sesion iniciada correctamente" << std::endl;
 }
 
 void Login(const System& system) {
@@ -77,6 +78,10 @@ void Login(const System& system) {
     std::cout << "Introduzca la contraseña: ";
     std::cin >> password;
   }
+
+  /// Siguiente fase
+  int pos = system.UserPos(username);
+  system.GetUsers().at(pos).ManagePetitions();
 }
 
 void Register(const System& system) {
@@ -107,7 +112,12 @@ void Register(const System& system) {
     std::cin >> password;
   }
   /// añadir a la base de datos
-  
+  std::string add = "echo " + username + ":" + password + ":" + name + ":" + email + " >> ../users.txt";
+  std::system(add.c_str());
+
+  /// Siguiente fase
+  int pos = system.UserPos(username);
+  system.GetUsers().at(pos).ManagePetitions();
 }
 
 bool CheckEmail(const std::string& email) {
