@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-#include "hashtable.h"
+#include "user.h"
 
 class System {
  public:
@@ -12,8 +12,8 @@ class System {
   void CreateUser(void);
 
  private:
-  HashTable users_;
-  HashTable petitions_;
+  std::vector<User> users_;
+  //std::vector<Petition> petitions_;
 };
 
 #endif
