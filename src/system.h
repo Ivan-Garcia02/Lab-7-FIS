@@ -3,10 +3,10 @@
 
 class System {
  public:
-  
+  bool CreateUser(void);
 
  private:
-
+  
 };
 
 #endif
