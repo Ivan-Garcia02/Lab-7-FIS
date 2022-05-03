@@ -6,7 +6,6 @@ System::System(const std::string& users, const std::string& petitions) {
   std::ifstream user_file{users};
   std::ifstream petitions_file{petitions};
   std::string line{""};
-  std::vector<User> vec_users;
   
   /// Crear vectores de usuarios
 
@@ -30,7 +29,7 @@ System::System(const std::string& users, const std::string& petitions) {
       email.push_back(line.at(i));
     }
     User user(username, password, name, email);
-    vec_users.push_back(user);
+    users_.push_back(user);
   }
 }
 int System::UserPos(const std::string& username) {
@@ -47,17 +46,18 @@ void System::CreateUser(void) {
   std::cin >> name;
 
 }
-void System::Login(void) {
+bool System::Login(void) {
   std::string username, password;
   std::cout << "Introduzca el nombre de usuario: ";
   std::cin >> username;
   std::cout << "Introduzca la contraseña: ";
   std::cin >> password;
   int pos = UserPos(username);
-  
-  if (pos != -1) {
 
-   // if (CheckPassword(password)) {
+  if (pos != -1) {
+    if (users_.at(pos).CheckPassword(password)) {
       
+    }
   }
+  return false;
 }

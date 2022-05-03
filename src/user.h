@@ -11,6 +11,7 @@ class User {
        : username_{username}, password_{password}, name_{name}, email_{email}, petitions_{false} {}
   void SetPetitions(std::vector<bool> petitions) {petitions_ = petitions; return;}
   std::string GetUsername(void) const {return username_;}
+  bool CheckPassword(const std::string& password) {return (password == this->password_);}
   int GetUid(void) const;
   bool operator==(const User&);
  private:
