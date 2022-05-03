@@ -11,34 +11,33 @@
 #ifndef DISPERSION_H
 #define DISPERSION_H
 
-template<class Key>
+#include <random>
+
 class DispersionFunction {
  public:
   /// DispersionFunction(const unsigned n) : 
   /// Devuelve posicion de la tabla donde insertar / buscar
   /// virtual unsigned operator()(const Key& k) const = 0;
-  virtual unsigned Position(const Key& k) const = 0 ;
+  virtual unsigned Position(const int& k) const = 0 ;
 };
 
 /// Dispersion por modulo
-template<class Key>
-class fdModule : public DispersionFunction<Key> {
+class fdModule : public DispersionFunction {
  public:
   fdModule(const unsigned n) : tablesize_{n} {}
-  unsigned Position(const Key& k) const {return k % tablesize_; }
+  unsigned Position(const int& k) const {return k % tablesize_; }
  private:
   unsigned tablesize_;
 };
 
 /// Dispersion por suma de los digitos
-template<class Key>
-class fdSum : public DispersionFunction<Key> {
+class fdSum : public DispersionFunction {
  public:
   fdSum(const unsigned n) : tablesize_{n} {}
-  unsigned Position(const Key& k) const {
-    Key sum{0}, valor{k};
+  unsigned Position(const int& k) const {
+    int sum{0}, valor{k};
     while(valor > 0) {
-      Key digito = valor % 10;
+      int digito = valor % 10;
       sum += digito;
       valor /= 10;
     }
@@ -49,11 +48,10 @@ class fdSum : public DispersionFunction<Key> {
 };
 
 /// Dispersion pseudo aleatoria
-template<class Key>
-class fdRandom: public DispersionFunction<Key> {
+class fdRandom: public DispersionFunction {
  public:
   fdRandom(const unsigned n): tablesize_(n){}
-  unsigned Position(const Key& k) const {
+  unsigned Position(const int& k) const {
     srand(k);  
     return rand() % tablesize_;
   }

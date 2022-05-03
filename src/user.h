@@ -6,7 +6,8 @@
 
 class User {
  public:
-  User(std::string username, std::string password, std::string name, std::string email, std::vector<bool> petitions)
+  User(const std::string& username, const std::string& password, const std::string& name,
+       const std::string& email, const std::vector<bool>& petitions)
        : username_{username}, password_{password}, name_{name}, email_{email}, petitions_{petitions} {}
   void SetPetitions(std::vector<bool> petitions) {petitions_ = petitions; return;}
  private:
