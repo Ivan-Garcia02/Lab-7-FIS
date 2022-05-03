@@ -11,7 +11,7 @@ void Info_Dorf();
 void Register_Login(const System&);
 void Login(const System&);
 void Register(const System&);
-bool EmailCheck(const std::string&);
+bool CheckEmail(const std::string&);
 bool CheckUsername(const std::string&);
 bool CheckName(const std::string&);
 bool CheckPassword(std::string&);
@@ -84,27 +84,30 @@ void Register(const System& system) {
   std::cout << "Introduzca el correo electrónico: ";
   std::cin >> email;
   while(!CheckEmail(email) || system.EmailExist(email)) {
-    std::cerr << "Email no valido, introduzcalo de nuevo." << std::endl;
+    std::cerr << "Email no valido, introduzcalo de nuevo: ";
     std::cin >> email;
   }
   std::cout << "Introduzca el nombre del usuario: ";
   std::cin >> username;
-  while(!CheckUsername(username) || system.UserPos(username) == -1) {
-    std::cerr << "Nombre de usuario no valido, introduzcalo de nuevo." << std::endl;
+  while(!CheckUsername(username) || system.UserPos(username) != -1) {
+    std::cerr << "Nombre de usuario no valido, introduzcalo de nuevo: ";
     std::cin >> username;
   }
   std::cout << "Introduzca su nombre y su primer apellido: ";
-  std::cin >> name;
+  std::getline(std::cin, name);
+  std::getline(std::cin, name);
   while(!CheckName(name)) {
-    std::cerr << "Nombre no valido, introduzcalo de nuevo." << std::endl;
-    std::cin >> name;
+    std::cerr << "Nombre no valido, introduzcalo de nuevo: ";
+    std::getline(std::cin, name);
   }
   std::cout << "Introduzca la contraseña: ";
-  std::cin >> name;
+  std::cin >> password;
   while(!CheckPassword(password)) {
-    std::cerr << "Contraseña no valida, introduzcala de nuevo." << std::endl;
+    std::cerr << "Contraseña no valida, introduzcala de nuevo: ";
     std::cin >> password;
   }
+  /// añadir a la base de datos
+  
 }
 
 bool CheckEmail(const std::string& email) {
@@ -115,7 +118,10 @@ bool CheckEmail(const std::string& email) {
     }
     ++i;
   }
-  if (i == 0 || (email.at(i + 1) == '.')) {
+  if (i == email.size()) {
+    return false;
+  }
+  if (i == 0 || (email.at(++i) == '.')) {
     return false;
   }
   while (i < email.size() && email.at(i) != '.') {
@@ -124,6 +130,10 @@ bool CheckEmail(const std::string& email) {
     }
     ++i;
   }
+  if (i == email.size()) {
+    return false;
+  }
+  ++i;
   while (i < email.size()) {
     if(!isalpha(email.at(i))) {
       return false;
@@ -150,6 +160,10 @@ bool CheckName(const std::string& name) {
     }
     ++i;
   }
+  if (i == name.size()) {
+    return false;
+  }
+  ++i;
   while (i < name.size()) {
     if(!isalpha(name.at(i))) {
       return false;

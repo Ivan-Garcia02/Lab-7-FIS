@@ -43,10 +43,10 @@ int System::UserPos(const std::string& username) const {
 bool System::EmailExist(const std::string& email) const {
   for (int i = 0; i < users_.size(); i++) {
     if(users_.at(i).GetEmail() == email) {
-      return false;
+      return true;
     }
   }
-  return true;
+  return false;
 }
 void System::CreateUser(void) {
   std::string username{""};
