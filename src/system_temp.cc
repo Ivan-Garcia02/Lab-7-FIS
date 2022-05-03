@@ -7,7 +7,8 @@
 
 void System::Login(void) {
   std::string username, password;
-  if (UserExist(GetUsername())) {
+  std::cin >> username;
+  if (UserExist(username)) {
     std::cout << "Introduzca el nombre de usuario: ";
     std::cin >> username;
     std::cout << "Introduzca la contraseña: ";

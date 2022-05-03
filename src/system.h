@@ -10,7 +10,10 @@ class System {
  public:
   System(const std::string&, const std::string&);
   void CreateUser(void);
-
+  bool UserExist(const std::string&);
+  void Login(void);
+  bool CheckPassword(const std::string&);
+  
  private:
   std::vector<User> users_;
   //std::vector<Petition> petitions_;
