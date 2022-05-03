@@ -9,11 +9,16 @@ class User {
   User(const std::string& username, const std::string& password, const std::string& name,
        const std::string& email)
        : username_{username}, password_{password}, name_{name}, email_{email}, petitions_{false} {}
-  void SetPetitions(std::vector<bool> petitions) {petitions_ = petitions; return;}
+  
+  /// getters
   std::string GetUsername(void) const {return username_;}
+  std::string GetEmail(void) const {return email_;}
+
+  void SetPetitions(std::vector<bool> petitions) {petitions_ = petitions; return;}
+  
+  /// Comprobar contraseña
   bool CheckPassword(const std::string& password) {return (password == this->password_);}
-  int GetUid(void) const;
-  bool operator==(const User&);
+
  private:
   std::string username_;
   std::string password_;

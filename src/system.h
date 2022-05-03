@@ -11,6 +11,7 @@ class System {
   System(const std::string&, const std::string&);
   void CreateUser(void);
   int UserPos(const std::string&) const;
+  bool EmailExist(const std::string&) const;
   bool Login(const std::string&, const std::string&) const;
   std::vector<User> GetUsers(void) const {return users_;}
  private:

@@ -40,6 +40,14 @@ int System::UserPos(const std::string& username) const {
   }
   return -1;
 }
+bool System::EmailExist(const std::string& email) const {
+  for (int i = 0; i < users_.size(); i++) {
+    if(users_.at(i).GetEmail() == email) {
+      return false;
+    }
+  }
+  return true;
+}
 void System::CreateUser(void) {
   std::string username{""};
   std::cout << "Introduzca el nombre de usuario: ";
@@ -51,9 +59,7 @@ void System::CreateUser(void) {
   }
 }
 bool System::Login(const std::string& username, const std::string& password) const {
-
   int pos = UserPos(username);
-
   if (pos != -1) {
     if (GetUsers().at(pos).CheckPassword(password)) {
       return true;
