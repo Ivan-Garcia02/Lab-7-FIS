@@ -11,6 +11,12 @@ void Info_Dorf();
 void Register_Login(const System&);
 void Login(const System&);
 void Register(const System&);
+bool EmailCheck(const std::string&);
+bool CheckUsername(const std::string&);
+bool CheckName(const std::string&);
+bool CheckPassword(std::string&);
+
+
 int main() {
 
   // Info_Dorf();
@@ -74,6 +80,97 @@ void Login(const System& system) {
 }
 
 void Register(const System& system) {
+  std::string username, password, name, email;
+  std::cout << "Introduzca el correo electrónico: ";
+  std::cin >> email;
+  while(!CheckEmail(email) || system.EmailExist(email)) {
+    std::cerr << "Email no valido, introduzcalo de nuevo." << std::endl;
+    std::cin >> email;
+  }
+  std::cout << "Introduzca el nombre del usuario: ";
+  std::cin >> username;
+  while(!CheckUsername(username) || system.UserPos(username) == -1) {
+    std::cerr << "Nombre de usuario no valido, introduzcalo de nuevo." << std::endl;
+    std::cin >> username;
+  }
+  std::cout << "Introduzca su nombre y su primer apellido: ";
+  std::cin >> name;
+  while(!CheckName(name)) {
+    std::cerr << "Nombre no valido, introduzcalo de nuevo." << std::endl;
+    std::cin >> name;
+  }
+  std::cout << "Introduzca la contraseña: ";
+  std::cin >> name;
+  while(!CheckPassword(password)) {
+    std::cerr << "Contraseña no valida, introduzcala de nuevo." << std::endl;
+    std::cin >> password;
+  }
+}
 
+bool CheckEmail(const std::string& email) {
+  int i{0};
+  while (i < email.size() && email.at(i) != '@') {
+    if(!isalnum(email.at(i))) {
+      return false;
+    }
+    ++i;
+  }
+  if (i == 0 || (email.at(i + 1) == '.')) {
+    return false;
+  }
+  while (i < email.size() && email.at(i) != '.') {
+    if(!isalpha(email.at(i))) {
+      return false;
+    }
+    ++i;
+  }
+  while (i < email.size()) {
+    if(!isalpha(email.at(i))) {
+      return false;
+    }
+    ++i;    
+  }
+  return true;
+}
 
+bool CheckUsername(const std::string& username) {
+  for (int i = 0; i < username.size(); i++) {
+    if (!isalnum(username.at(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool CheckName(const std::string& name) {
+  int i{0};
+  while (i < name.size() && name.at(i) != ' ') {
+    if(!isalpha(name.at(i))) {
+      return false;
+    }
+    ++i;
+  }
+  while (i < name.size()) {
+    if(!isalpha(name.at(i))) {
+      return false;
+    }
+    ++i;    
+  }
+  return true;
+}
+
+bool CheckPassword(std::string& password) {
+  while (password.size() < 4) {
+    std::cout << "Introduzca una contraseña de un minimo de 4 caracteres: ";
+    std::cin >> password;
+  }
+  for (int i = 0; i < password.size(); i++) {
+    if (!isalnum(password.at(i))) {
+      return false;
+    }
+  }
+  std::cout << "Confirme la contraseña: ";
+  std::string confirm;
+  std::cin >> confirm;
+  return confirm == password;
 }
