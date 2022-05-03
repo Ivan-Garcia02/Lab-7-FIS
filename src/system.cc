@@ -33,12 +33,31 @@ System::System(const std::string& users, const std::string& petitions) {
     vec_users.push_back(user);
   }
 }
-bool System::UserExist(const std::string&) {
-
+int System::UserPos(const std::string& username) {
+  for (int i = 0; i < users_.size(); i++) {
+    if(users_.at(i).GetUsername() == username) {
+      return i;
+    }
+  }
+  return -1;
 }
 void System::CreateUser(void) {
   std::string name{""};
   std::cout << "Introduzca el nombre de usuario: ";
   std::cin >> name;
 
+}
+void System::Login(void) {
+  std::string username, password;
+  std::cout << "Introduzca el nombre de usuario: ";
+  std::cin >> username;
+  std::cout << "Introduzca la contraseña: ";
+  std::cin >> password;
+  int pos = UserPos(username);
+  
+  if (pos != -1) {
+
+   // if (CheckPassword(password)) {
+      
+  }
 }
