@@ -32,7 +32,7 @@ System::System(const std::string& users, const std::string& petitions) {
     users_.push_back(user);
   }
 }
-int System::UserPos(const std::string& username) {
+int System::UserPos(const std::string& username) const {
   for (int i = 0; i < users_.size(); i++) {
     if(users_.at(i).GetUsername() == username) {
       return i;
@@ -41,22 +41,22 @@ int System::UserPos(const std::string& username) {
   return -1;
 }
 void System::CreateUser(void) {
-  std::string name{""};
-  std::cout << "Introduzca el nombre de usuario: ";
-  std::cin >> name;
-
-}
-bool System::Login(void) {
-  std::string username, password;
+  std::string username{""};
   std::cout << "Introduzca el nombre de usuario: ";
   std::cin >> username;
-  std::cout << "Introduzca la contraseña: ";
-  std::cin >> password;
   int pos = UserPos(username);
 
   if (pos != -1) {
-    if (users_.at(pos).CheckPassword(password)) {
-      
+  
+  }
+}
+bool System::Login(const std::string& username, const std::string& password) const {
+
+  int pos = UserPos(username);
+
+  if (pos != -1) {
+    if (GetUsers().at(pos).CheckPassword(password)) {
+      return true;
     }
   }
   return false;
