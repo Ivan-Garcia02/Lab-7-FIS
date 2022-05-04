@@ -81,7 +81,7 @@ void Login(const System& system) {
 
   /// Siguiente fase
   int pos = system.UserPos(username);
-  system.GetUsers().at(pos).ManagePetitions();
+  // system.GetUsers().at(pos).ManagePetitions();
 }
 
 void Register(const System& system) {
@@ -89,13 +89,23 @@ void Register(const System& system) {
   std::cout << "Introduzca el correo electrónico: ";
   std::cin >> email;
   while(!CheckEmail(email) || system.EmailExist(email)) {
-    std::cerr << "Email no valido, introduzcalo de nuevo: ";
+    if (!CheckEmail(email)) {
+      std::cerr << "Email no valido, ";
+    } else {
+      std::cerr << "Email ya registrado, ";
+    }
+    std::cerr << "introduzcalo de nuevo: ";
     std::cin >> email;
   }
   std::cout << "Introduzca el nombre del usuario: ";
   std::cin >> username;
   while(!CheckUsername(username) || system.UserPos(username) != -1) {
-    std::cerr << "Nombre de usuario no valido, introduzcalo de nuevo: ";
+    if (!CheckUsername(username)) {
+      std::cerr << "Nombre de usuario no valido, ";
+    } else {
+      std::cerr << "Nombre de usuario ya registrado, ";
+    }
+    std::cerr << "introduzcalo de nuevo: ";
     std::cin >> username;
   }
   std::cout << "Introduzca su nombre y su primer apellido: ";
@@ -117,7 +127,7 @@ void Register(const System& system) {
 
   /// Siguiente fase
   int pos = system.UserPos(username);
-  system.GetUsers().at(pos).ManagePetitions();
+  // system.GetUsers().at(pos).ManagePetitions();
 }
 
 bool CheckEmail(const std::string& email) {
