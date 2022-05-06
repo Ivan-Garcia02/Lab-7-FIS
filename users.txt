@@ -1,1 +1,5 @@
-elxokas:hola:Ramiro Difonti:alu@gmail.com
+elxokas:hola:Ramiro Difonti:alu@gmail.com:1,2,3,10:2,3
+pepe:adios:dario dominguez:dario@gmail.com::
+juan:chao:juan alberto:juan@gmail.com::
+iva:prego:ivan garcia:ivan@gmail.es::
+javi:agur:javi ramos:javi@mola.com::6,7
