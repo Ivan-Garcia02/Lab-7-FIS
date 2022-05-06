@@ -3,8 +3,10 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "user.h"
+#include "petition.h"
 
 class System {
  public:
@@ -13,10 +15,15 @@ class System {
   int UserPos(const std::string&) const;
   bool EmailExist(const std::string&) const;
   bool Login(const std::string&, const std::string&) const;
+  void Register(const std::string&, const std::string&, const std::string&, const std::string&, const std::vector<int>&, const std::vector<int>& );
   std::vector<User> GetUsers(void) const {return users_;}
+  
+  void ShowPetitions();
+  void CreatePetition(int user);
+  
  private:
   std::vector<User> users_;
-  //std::vector<Petition> petitions_;
+  std::vector<Petition> petitions_;
 };
 
 #endif

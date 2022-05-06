@@ -8,23 +8,32 @@
 #include "system.h"
 
 void Info_Dorf();
-void Register_Login(const System&);
-void Login(const System&);
-void Register(const System&);
+int Register_Login(System&);
+int Login(System&);
+int Register(System&);
 bool CheckEmail(const std::string&);
 bool CheckUsername(const std::string&);
 bool CheckName(const std::string&);
 bool CheckPassword(std::string&);
+void Show_menu(System&, int);
+void ActualizarBaseDatos(System&);
 
 
 int main() {
 
-  Info_Dorf();
+  //Info_Dorf();
   std::string user_file{"../users.txt"};
-  System system{user_file, ""};
+  std::string petitions_file{"../PETITIONS/petition_general.txt"};
+  System system{user_file, petitions_file};
   
-  Register_Login(system);
-  
+  int user_pos = Register_Login(system);
+  if (user_pos == -1) {
+    return 1;
+  }
+  Show_menu(system, user_pos);
+
+  ActualizarBaseDatos(system);
+
   return 0;
 }
 
@@ -46,7 +55,7 @@ void Info_Dorf() {
   system("clear");
 }
 
-void Register_Login(const System& system) {
+int Register_Login(System& system) {
   bool opc{0};
   std::cout << "\t" << "Registrar (0):" << "\n" << "\t" << "Iniciar Sesion (1):" << std::endl;
   std::cout << "Elija una opcion: ";
@@ -56,36 +65,44 @@ void Register_Login(const System& system) {
     std::cin >> opc;
   }
   std::system("clear");
+  int pos {0};
   if(opc) {
-    Login(system);
+    pos = Login(system);
   } else {
-    Register(system);
+    pos = Register(system);
   }
   std::cout << "Sesion iniciada correctamente" << std::endl;
+  return pos;
 }
 
-void Login(const System& system) {
+int Login(System& system) {
   std::string username, password;
   std::cout << "Introduzca el nombre de usuario: ";
   std::cin >> username;
   std::cout << "Introduzca la contraseña: ";
   std::cin >> password;
-
+  int i{1};
   while (!system.Login(username, password)) {
+    if (i == 4) {
+      return -1;
+    }
     std::cerr << "Usuario o contraseña incorrectas, vuelva a intentarlo." << std::endl;
     std::cout << "Introduzca el nombre de usuario: ";
     std::cin >> username;
     std::cout << "Introduzca la contraseña: ";
     std::cin >> password;
+    i++;
   }
 
   /// Siguiente fase
   int pos = system.UserPos(username);
   // system.GetUsers().at(pos).ManagePetitions();
+  return pos;
 }
 
-void Register(const System& system) {
+int Register(System& system) {
   std::string username, password, name, email;
+  std::vector<int> petition_fimardas{NULL}, petition_creadas{NULL}; 
   std::cout << "Introduzca el correo electrónico: ";
   std::cin >> email;
   while(!CheckEmail(email) || system.EmailExist(email)) {
@@ -122,12 +139,14 @@ void Register(const System& system) {
     std::cin >> password;
   }
   /// añadir a la base de datos
-  std::string add = "echo " + username + ":" + password + ":" + name + ":" + email + " >> ../users.txt";
+  std::string add = "echo " + username + ":" + password + ":" + name + ":" + email +  ":" + ":" + ">> ../users.txt";
   std::system(add.c_str());
-
+  system.Register(username, password,email ,name ,petition_fimardas, petition_creadas);
+  
   /// Siguiente fase
   int pos = system.UserPos(username);
   // system.GetUsers().at(pos).ManagePetitions();
+  return pos;
 }
 
 bool CheckEmail(const std::string& email) {
@@ -207,4 +226,57 @@ bool CheckPassword(std::string& password) {
   std::string confirm;
   std::cin >> confirm;
   return confirm == password;
+}
+
+
+void Show_menu(System& system, int pos) {
+  std::cout << "\t" << "Ver listado de peticiones (0)" << std::endl;
+  std::cout << "\t" << "Crear peticion (1)" << std::endl;
+  int opc;
+  std::cout << "Elija una opcion: ";
+  std::cin >> opc;
+  switch (opc)
+  {
+  case 0:
+    system.ShowPetitions();
+    break;
+  case 1:
+    system.CreatePetition(pos);
+    break;
+  default:
+    break;
+  }
+}
+
+
+void ActualizarBaseDatos(System& system) {
+  std::string peticiones_firmadas, peticiones_creadas;
+
+  std::string add = "rm ../users.txt";
+  std::system(add.c_str());
+
+  for (int i {0}; i < system.GetUsers().size(); i++) {
+    User user_aux = system.GetUsers()[i];
+    
+    for (int j {0}; j < user_aux.GetPetitionsFirmadas().size(); j++) {
+      peticiones_firmadas += std::to_string(user_aux.GetPetitionsFirmadas(j));
+      if (j + 1 != user_aux.GetPetitionsFirmadas().size()) {
+        peticiones_firmadas.push_back(',');
+      }
+    }
+
+    for (int j {0}; j < user_aux.GetPetitionsCreadas().size(); j++) {
+      peticiones_creadas += std::to_string(user_aux.GetPetitionsCreadas(j));
+      if (j + 1 != user_aux.GetPetitionsCreadas().size()) {
+        peticiones_creadas.push_back(',');
+      }
+    }
+
+    add = "echo " + user_aux.GetUsername() + ":" + user_aux.GetPassword() + ":" + user_aux.GetName() + ":" + user_aux.GetEmail() + ":" + peticiones_firmadas + ":" + peticiones_creadas + ">> ../users.txt";
+    std::system(add.c_str());
+
+    peticiones_creadas.clear();
+    peticiones_firmadas.clear();
+  }
+
 }
