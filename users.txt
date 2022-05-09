@@ -1,2 +1,2 @@
-Andres:ortega:Andres Hernandez:dorf@cosa.com::
-Dario:12345:Dario DOminguez:xokas@cosa.com::1
+ivan:ivan:ivan garcia:ivan@gmail.com:0,1:1,2
+andres:andres:Andres Hernandez:andres@dorf.ic:0,1,2:3

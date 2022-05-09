@@ -172,9 +172,10 @@ void System::ShowPetitions(int pos) {
         }
       std::cout << std::endl;
       }
-      char esperar;
-      std::cout << "Introducir algo para continuar: ";
-      std::cin >> esperar;
+      std::cout << "Pulsa una tecla para continuar: ";
+      std::string esperar;
+      std::getline(std::cin, esperar);
+      std::getline(std::cin, esperar);
       system("clear");
     }
   }
@@ -185,7 +186,12 @@ void System::ShowPetitions(int pos) {
 void System::ShowMyPetitions(int pos) {
   int number_peticion {-1};
   if (users_[pos].GetPetitionsCreadas().empty()) {
-    std::cout << "No hay ninguna peticion creada" << std::endl; 
+    std::cout << "No hay ninguna peticion creada" << std::endl;
+    std::cout << "Pulsa una tecla para continuar: ";
+    std::string esperar;
+    std::getline(std::cin, esperar);
+    std::getline(std::cin, esperar);
+    system("clear");
   } 
   else {
     while (number_peticion != 0) {
@@ -200,15 +206,16 @@ void System::ShowMyPetitions(int pos) {
       std::cin >> number_peticion;
       std::cout << std::endl;
       
-      // FIRMAR PETICIONES
+      
       if (number_peticion != 0 && number_peticion <= petitions_.size()) {
         std::cout << petitions_[number_peticion-1] << std::endl;
       }
-      char esperar;
-      std::cout << "Introducir algo para continuar: ";
-      std::cin >> esperar;
+      std::cout << "Pulsa una tecla para continuar: ";
+      std::string esperar;
+      std::getline(std::cin, esperar);
+      std::getline(std::cin, esperar);
       system("clear");
-    }    
+    } 
   }
 }
 

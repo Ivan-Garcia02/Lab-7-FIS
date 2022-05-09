@@ -22,7 +22,7 @@ void historia();
 
 int main() {
 
-  //Info_Dorf();
+  Info_Dorf();
   std::string user_file{"../users.txt"};
   std::string petitions_file{"../PETITIONS/petition_general.txt"};
   System system{user_file, petitions_file};
@@ -321,7 +321,9 @@ void historia() {
   for (auto i : texto) {
       std::cout << i;
   }
-  char esperar;
-  std::cout << "Introducir algo para continuar: ";
-  std::cin >> esperar;
+  std::cout << "Pulsa una tecla para continuar: ";
+  std::string esperar;
+  std::getline(std::cin, esperar);
+  std::getline(std::cin, esperar);
+  system("clear");
 }
