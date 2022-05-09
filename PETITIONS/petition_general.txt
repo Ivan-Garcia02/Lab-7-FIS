@@ -1,6 +1,0 @@
-peticion1.txt
-peticion2.txt
-peticion3.txt
-peticion4.txt
-peticion6.txt
-peticion7.txt

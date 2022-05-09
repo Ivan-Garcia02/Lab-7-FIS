@@ -17,9 +17,11 @@ class System {
   bool Login(const std::string&, const std::string&) const;
   void Register(const std::string&, const std::string&, const std::string&, const std::string&, const std::vector<int>&, const std::vector<int>& );
   std::vector<User> GetUsers(void) const {return users_;}
+  std::vector<Petition> GetPetitions() const {return petitions_;}
   
-  void ShowPetitions();
+  void ShowPetitions(int pos);
   void CreatePetition(int user);
+  void ShowMyPetitions(int pos);
   
  private:
   std::vector<User> users_;

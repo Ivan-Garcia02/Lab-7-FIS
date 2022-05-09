@@ -17,6 +17,7 @@ bool CheckName(const std::string&);
 bool CheckPassword(std::string&);
 void Show_menu(System&, int);
 void ActualizarBaseDatos(System&);
+void historia();
 
 
 int main() {
@@ -102,7 +103,7 @@ int Login(System& system) {
 
 int Register(System& system) {
   std::string username, password, name, email;
-  std::vector<int> petition_fimardas{NULL}, petition_creadas{NULL}; 
+  std::vector<int> petition_fimardas, petition_creadas; 
   std::cout << "Introduzca el correo electrónico: ";
   std::cin >> email;
   while(!CheckEmail(email) || system.EmailExist(email)) {
@@ -230,21 +231,35 @@ bool CheckPassword(std::string& password) {
 
 
 void Show_menu(System& system, int pos) {
-  std::cout << "\t" << "Ver listado de peticiones (0)" << std::endl;
-  std::cout << "\t" << "Crear peticion (1)" << std::endl;
-  int opc;
-  std::cout << "Elija una opcion: ";
-  std::cin >> opc;
-  switch (opc)
-  {
-  case 0:
-    system.ShowPetitions();
-    break;
-  case 1:
-    system.CreatePetition(pos);
-    break;
-  default:
-    break;
+  int opc{-1};
+  while (opc != 0) {
+    std::system("sleep 1");
+    std::system("clear");
+    std::cout << "\t" << "Cerrar Programa (0)" << std::endl;
+    std::cout << "\t" << "Ver listado de peticiones (1)" << std::endl;
+    std::cout << "\t" << "Crear peticion (2)" << std::endl;
+    std::cout << "\t" << "Ver mis peticiones (3)" << std::endl;
+    std::cout << "\t" << "Historia de la empresa (4)" << std::endl;
+    std::cout << "Elija una opcion: ";
+    std::cin >> opc;
+    std::cout << std::endl;
+    switch (opc)
+    {
+    case 1:
+      system.ShowPetitions(pos);
+      break;
+    case 2:
+      system.CreatePetition(pos);
+      break;
+    case 3:
+      system.ShowMyPetitions(pos);
+      break;
+    case 4:
+      historia();
+      break;
+    default:
+      break;
+    }
   }
 }
 
@@ -255,6 +270,7 @@ void ActualizarBaseDatos(System& system) {
   std::string add = "rm ../users.txt";
   std::system(add.c_str());
 
+  // Actualizar fichero de usuarios
   for (int i {0}; i < system.GetUsers().size(); i++) {
     User user_aux = system.GetUsers()[i];
     
@@ -268,7 +284,7 @@ void ActualizarBaseDatos(System& system) {
     for (int j {0}; j < user_aux.GetPetitionsCreadas().size(); j++) {
       peticiones_creadas += std::to_string(user_aux.GetPetitionsCreadas(j));
       if (j + 1 != user_aux.GetPetitionsCreadas().size()) {
-        peticiones_creadas.push_back(',');
+        peticiones_creadas.push_back(',');  std::cout << std::endl;
       }
     }
 
@@ -279,4 +295,33 @@ void ActualizarBaseDatos(System& system) {
     peticiones_firmadas.clear();
   }
 
+  // Actualizar peticiones
+  for (int i {0}; i < system.GetPetitions().size(); i++) {
+    Petition petition_aux = system.GetPetitions()[i];
+
+    add = "echo " + petition_aux.get_titulo() + ":" + petition_aux.get_descripcion() + ":" + std::to_string(petition_aux.get_usuario()) + ":" + std::to_string(petition_aux.get_firmas()) + "> ../PETITIONS/peticion" + std::to_string(i + 1) + ".txt";
+    std::system(add.c_str());
+  }
+
+}
+
+
+void historia() {
+
+  std::string texto;
+  std::string linea;
+  std::string intro_file{"../info_empresa.txt"};
+  std::ifstream archivo(intro_file);
+
+  while (getline(archivo, linea)) {
+    texto = texto + linea + "\n";
+  }
+  archivo.close();
+
+  for (auto i : texto) {
+      std::cout << i;
+  }
+  char esperar;
+  std::cout << "Introducir algo para continuar: ";
+  std::cin >> esperar;
 }

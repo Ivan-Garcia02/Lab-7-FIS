@@ -30,6 +30,8 @@ class User {
 
   /// Peticiones
   void CreatePetition(int PID);
+  void SingPetition(int PID);
+  bool CheckPetitionSing(int PID);
 
  private:
   std::string username_;
