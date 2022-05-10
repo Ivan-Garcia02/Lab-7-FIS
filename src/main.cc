@@ -23,8 +23,8 @@ void historia();
 int main() {
 
   Info_Dorf();
-  std::string user_file{"../users.txt"};
-  std::string petitions_file{"../PETITIONS/petition_general.txt"};
+  std::string user_file{"../BaseData/users.txt"};
+  std::string petitions_file{"../BaseData/PETITIONS/petition_general.txt"};
   System system{user_file, petitions_file};
   
   int user_pos = Register_Login(system);
@@ -41,7 +41,7 @@ int main() {
 void Info_Dorf() {
   std::string texto;
   std::string linea;
-  std::string intro_file{"../info_intro.txt"};
+  std::string intro_file{"../BaseData/info_intro.txt"};
   std::ifstream archivo(intro_file);
 
   while (getline(archivo, linea)) {
@@ -140,7 +140,7 @@ int Register(System& system) {
     std::cin >> password;
   }
   /// añadir a la base de datos
-  std::string add = "echo " + username + ":" + password + ":" + name + ":" + email +  ":" + ":" + ">> ../users.txt";
+  std::string add = "echo " + username + ":" + password + ":" + name + ":" + email +  ":" + ":" + ">> ../BaseData/users.txt";
   std::system(add.c_str());
   system.Register(username, password,email ,name ,petition_fimardas, petition_creadas);
   
@@ -267,7 +267,7 @@ void Show_menu(System& system, int pos) {
 void ActualizarBaseDatos(System& system) {
   std::string peticiones_firmadas, peticiones_creadas;
 
-  std::string add = "rm ../users.txt";
+  std::string add = "rm ../BaseData/users.txt";
   std::system(add.c_str());
 
   // Actualizar fichero de usuarios
@@ -288,7 +288,7 @@ void ActualizarBaseDatos(System& system) {
       }
     }
 
-    add = "echo " + user_aux.GetUsername() + ":" + user_aux.GetPassword() + ":" + user_aux.GetName() + ":" + user_aux.GetEmail() + ":" + peticiones_firmadas + ":" + peticiones_creadas + ">> ../users.txt";
+    add = "echo " + user_aux.GetUsername() + ":" + user_aux.GetPassword() + ":" + user_aux.GetName() + ":" + user_aux.GetEmail() + ":" + peticiones_firmadas + ":" + peticiones_creadas + ">> ../BaseData/users.txt";
     std::system(add.c_str());
 
     peticiones_creadas.clear();
@@ -299,7 +299,7 @@ void ActualizarBaseDatos(System& system) {
   for (int i {0}; i < system.GetPetitions().size(); i++) {
     Petition petition_aux = system.GetPetitions()[i];
 
-    add = "echo " + petition_aux.get_titulo() + ":" + petition_aux.get_descripcion() + ":" + std::to_string(petition_aux.get_usuario()) + ":" + std::to_string(petition_aux.get_firmas()) + "> ../PETITIONS/peticion" + std::to_string(i + 1) + ".txt";
+    add = "echo " + petition_aux.get_titulo() + ":" + petition_aux.get_descripcion() + ":" + std::to_string(petition_aux.get_usuario()) + ":" + std::to_string(petition_aux.get_firmas()) + "> ../BaseData/PETITIONS/peticion" + std::to_string(i + 1) + ".txt";
     std::system(add.c_str());
   }
 
@@ -310,7 +310,7 @@ void historia() {
 
   std::string texto;
   std::string linea;
-  std::string intro_file{"../info_empresa.txt"};
+  std::string intro_file{"../BaseData/info_empresa.txt"};
   std::ifstream archivo(intro_file);
 
   while (getline(archivo, linea)) {

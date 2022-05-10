@@ -60,12 +60,11 @@ System::System(const std::string& users, const std::string& petitions) {
     users_.push_back(user);
   }
 
-  /// Crear vectores de usuarios
-  
+  /// Crear vectores de peticiones
   
   std::string petition {""};
   while (getline(petitions_file, petition)) {
-    std::string petition_file_str{"../PETITIONS/"};
+    std::string petition_file_str{"../BaseData/PETITIONS/"};
     petition_file_str = petition_file_str + petition;
     std::ifstream petition_name{petition_file_str}; 
     while (getline(petition_name, line)) { 
@@ -234,10 +233,10 @@ void System::CreatePetition(int user) {
 
   int PID = petitions_.size() + 1;
   /// añadir a la base de datos
-  std::string add = "echo peticion" + std::to_string(PID) + ".txt" + " >> ../PETITIONS/petition_general.txt";
+  std::string add = "echo peticion" + std::to_string(PID) + ".txt" + " >> ../BaseData/PETITIONS/petition_general.txt";
   std::system(add.c_str());
 
-  add = "echo " + titulo + ":" + descripcion + ":" + std::to_string(user) + ":0" + " >> ../PETITIONS/peticion" + std::to_string(PID) + ".txt";
+  add = "echo " + titulo + ":" + descripcion + ":" + std::to_string(user) + ":0" + " >> ../BaseData/PETITIONS/peticion" + std::to_string(PID) + ".txt";
   std::system(add.c_str());
   petitions_.push_back(Petition(titulo, descripcion, 0, user));
 

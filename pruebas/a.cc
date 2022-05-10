@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <termios.h>
-#include <term.h>
-#include <curses.h>
+//#include <term.h>
+//#include <curses.h>
 #include <unistd.h>
 #include <iostream>
 static struct termios initial_settings, new_settings;
