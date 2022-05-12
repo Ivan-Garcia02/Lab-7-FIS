@@ -1,2 +1,3 @@
 ivan:ivan:ivan garcia:ivan@dorf.org:0,1:1,2
 andres:andres:andres ortega:andres@gmail.com:0,2:3
+Elden:noDRM:xci nsp:elamigos@pirata.com:2,3:
