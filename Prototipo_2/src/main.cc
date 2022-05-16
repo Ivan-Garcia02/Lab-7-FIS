@@ -5,7 +5,7 @@
 
 int main() {
 
-  // Info_Dorf();
+  Info_Dorf();
   std::string user_file{"../BaseData/users.txt"};
   std::string petitions_file{"../BaseData/PETITIONS/petition_general.txt"};
 

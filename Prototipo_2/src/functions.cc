@@ -470,6 +470,7 @@ int CheckPassword(const std::string& password, const std::string& confirm) {
   return 0;
 }
 void show_menu(System& system, int pos) {
+  std::system("clear");
   Menu(0);
   int ch = 0;
   int option{0};
@@ -505,6 +506,7 @@ void show_menu(System& system, int pos) {
     system.ShowMyPetitions(pos);
   } else {
     historia();
+    show_menu(system, pos);
   }
 }
 void ActualizarBaseDatos(System& system) {
@@ -551,23 +553,15 @@ void ActualizarBaseDatos(System& system) {
 
 }
 void historia() {
-
-  std::string texto;
-  std::string linea;
-  std::string intro_file{"../BaseData/info_empresa.txt"};
-  std::ifstream archivo(intro_file);
-
-  while (getline(archivo, linea)) {
-    texto = texto + linea + "\n";
+  std::system("clear");
+  History();
+  int ch = 0;
+  init_keyboard();
+  while(ch == 0){
+    if(kbhit ()){
+      ch=readch(); 
+    }
   }
-  archivo.close();
-
-  for (auto i : texto) {
-      std::cout << i;
-  }
-  std::cout << "Pulsa una tecla para continuar: ";
-  std::string esperar;
-  std::getline(std::cin, esperar);
-  std::getline(std::cin, esperar);
-  system("clear");
+  close_keyboard();
+  std::system("clear");
 }

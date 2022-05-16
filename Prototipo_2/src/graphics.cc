@@ -2,6 +2,24 @@
 
 #include "graphics.h"
 
+void History(void) {
+  std::cout << "╔═════════════════════════════════════════════════════════╗\n" 
+               "║        NUESTRA HISTORIA NOS HACE SER COMO SOMOS         ║\n"
+               "║                  DEMOCRACIA EN ACCIÓN                   ║\n"
+               "╠═════════════════════════════════════════════════════════╣\n"
+               "║                                                         ║\n"
+               "║ Dorf nace de la necesidad de poder dotar de voz y hacer ║\n"
+               "║ partícipe en la toma de decisiones a la ciudadanía.     ║\n"
+               "║ Una manera sencilla y directa de hacer llegar las       ║\n"
+               "║ inquietudes y reclamaciones de los habitantes a sus     ║\n"
+               "║ respectivas administraciones.                           ║\n"
+               "║ El objetivo de la plataforma es ser la voz del          ║\n"
+               "║ ciudadano, por ello nace Dorf (pueblo, en alemán).      ║\n"
+               "║                                                         ║\n"
+               "║        Pulsa cualquier tecla para continuar...          ║\n"
+               "║                                                         ║\n"
+               "╚═════════════════════════════════════════════════════════╝\n";
+}
 void WaitCreatePet() {
   std::cout << "╔════════════════════════════════════════════════════════╗\n" 
                "║                     CREAR PETICION                     ║\n"

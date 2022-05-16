@@ -41,4 +41,5 @@ void SignPetition(const Petition&, const std::string&);
 void CreatePetName(const std::string&);
 void CreatePetDesc(const std::string&);
 void WaitCreatePet(void);
+void History(void);
 #endif
