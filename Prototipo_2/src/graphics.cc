@@ -20,6 +20,53 @@ void History(void) {
                "║                                                         ║\n"
                "╚═════════════════════════════════════════════════════════╝\n";
 }
+
+void EmptyMyPet(void) {
+  std::cout << "╔════════════════════════════════════════════════════════╗\n" 
+               "║                      ELIJA OPCION                      ║\n"
+               "╠════════════════════════════════════════════════════════╣\n"
+               "║                                                        ║\n"
+               "║             No hay ninguna peticion creada             ║\n"
+               "║                                                        ║\n"
+               "║        Pulsa cualquier tecla para continuar...         ║\n"
+               "║                                                        ║\n"
+               "║                                                        ║\n"
+               "╚════════════════════════════════════════════════════════╝\n";
+}
+
+int ShowMyPet(std::vector<Petition>& petitions, std::vector<int>& peticiones_user, int option) {
+  int ret{0};
+  std::cout << "╔════════════════════════════════════════════════════════╗\n" 
+               "║                      ELIJA OPCION                      ║\n"
+               "╠════════════════════════════════════════════════════════╣\n"
+               "║                                                        ║\n";
+
+  std::string body{""};
+  if (option == 0) {
+    body =  "║ \033[7m0. Volver atrás programa\033[0m                               ║\n";
+  } else {
+    body =  "║ 0. Volver atrás programa                               ║\n";
+  }
+  for (int i = 0; i < peticiones_user.size(); i++) {
+    body += "║                                                        ║\n";
+    if (option == (i + 1)) {
+      body = body + "║ " + "\033[7m" + std::to_string(peticiones_user.at(i) + 1) + ". " + petitions.at(peticiones_user[i]-1).get_titulo() + "\033[0m";      
+      ret = option;
+    } else {
+      body = body + "║ " + std::to_string(peticiones_user.at(i) + 1) + ". " + petitions.at(peticiones_user[i]-1).get_titulo();   
+    }
+    for (int j = petitions.at(peticiones_user[i]-1).get_titulo().size(); j < 52; j++) {
+      body += " ";
+    }
+    body += "║\n"; 
+  }
+  std::cout << body;             
+  std::cout << "║                                                        ║\n"
+               "║                                                        ║\n"
+               "╚════════════════════════════════════════════════════════╝\n";
+  return ret;
+}
+
 void WaitCreatePet() {
   std::cout << "╔════════════════════════════════════════════════════════╗\n" 
                "║                     CREAR PETICION                     ║\n"
@@ -32,6 +79,7 @@ void WaitCreatePet() {
                "║                                                        ║\n"
                "╚════════════════════════════════════════════════════════╝\n";
 }
+
 void CreatePetDesc(const std::string& desc) {
   std::cout << "╔════════════════════════════════════════════════════════╗\n" 
                "║                     CREAR PETICION                     ║\n"

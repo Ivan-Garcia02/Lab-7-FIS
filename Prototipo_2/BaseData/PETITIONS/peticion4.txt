@@ -1,1 +1,1 @@
-Salvar al soldado:Esta es la descripcion:0:1
+pe :pe:1:0

@@ -1,1 +1,1 @@
-Salvar la tejita:No a las gruas:0:2
+avioneta:avion avioneta:0:0

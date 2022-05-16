@@ -470,7 +470,6 @@ int CheckPassword(const std::string& password, const std::string& confirm) {
   return 0;
 }
 void show_menu(System& system, int pos) {
-  std::system("clear");
   Menu(0);
   int ch = 0;
   int option{0};
@@ -492,6 +491,7 @@ void show_menu(System& system, int pos) {
   close_keyboard();
   std::system("clear");
   if (option == 0) {
+    ActualizarBaseDatos(system);
     Register_Login(system);
   } else if (option == 1) {
     system.ShowPetitions(pos);
