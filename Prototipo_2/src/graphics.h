@@ -41,4 +41,12 @@ void SignPetition(const Petition&, const std::string&);
 void CreatePetName(const std::string&);
 void CreatePetDesc(const std::string&);
 void WaitCreatePet(void);
+void EmptyMyPet(void);
+int ShowMyPet(std::vector<Petition>&, std::vector<int>&, int);
+void History(void);
+void Cantidad(const std::string&);
+void Tarjeta(const std::string&);
+void Fecha(const std::string&);
+void CVV(const std::string&);
+void MensajeDonacion(int, const std::string&);
 #endif

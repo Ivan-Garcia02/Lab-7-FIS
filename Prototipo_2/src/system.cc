@@ -3,9 +3,10 @@
 #include "system.h"
 #include "graphics.h"
 #include "functions.h"
-System::System(const std::string& users, const std::string& petitions) {
+System::System(const std::string& users, const std::string& petitions, const std::string& donations) {
   std::ifstream user_file{users};
   std::ifstream petitions_file{petitions};
+  std::ifstream donation_file{donations};
   std::string line{""};
   
   /// Crear vectores de usuarios
@@ -70,7 +71,7 @@ System::System(const std::string& users, const std::string& petitions) {
     std::ifstream petition_name{petition_file_str}; 
     while (getline(petition_name, line)) { 
       int i{0};
-      std::string titulo{""}, descripcion{""}, dueno{""}, firmas{""};
+      std::string titulo{""}, descripcion{""}, dueno{""}, firmas{""}, donacion{""};
       titulo.push_back(line.at(i));
       while (line.at(++i) != ':') {
         titulo.push_back(line.at(i));
@@ -84,13 +85,21 @@ System::System(const std::string& users, const std::string& petitions) {
         dueno.push_back(line.at(i));
       }
       firmas.push_back(line.at(++i));
-      while (++i < line.size()) {
+      while (line.at(++i) != ':') {
         firmas.push_back(line.at(i));
       }
+      while (++i < line.size()) {
+        donacion.push_back(line.at(i));
+      }
       int user{std::stoi(dueno)};
-      Petition peticion(titulo, descripcion, std::stoi(firmas), users_.at(user).GetName());
+      int donation{std::stoi(donacion)};
+      Petition peticion(titulo, descripcion, std::stoi(firmas), users_.at(user).GetName(), donation);
       petitions_.push_back(peticion);
     }
+  }
+  std::string donation {""};
+  while (getline(donation_file, donation)) {
+    cantidad_donada_ = std::stoi(donation);
   }
 }
 int System::UserPos(const std::string& username) const {
@@ -185,40 +194,111 @@ void System::ShowPetitions(int pos) {
   ShowPetitions(pos);
 }
 void System::ShowMyPetitions(int pos) {
-  int number_peticion {-1};
+// MENSAJE NO HAY PETICIONES
   if (users_[pos].GetPetitionsCreadas().empty()) {
-    std::cout << "No hay ninguna peticion creada" << std::endl;
-    std::cout << "Pulsa una tecla para continuar: ";
-    std::string esperar;
-    std::getline(std::cin, esperar);
-    std::getline(std::cin, esperar);
-    system("clear");
+    EmptyMyPet();
+    int ch{0};
+    init_keyboard();
+    while (ch == 0) {
+      if (kbhit()) {
+        ch = readch();
+      }
+    }
+    close_keyboard();
+    std::system("clear");
+    show_menu(*this, pos);
   } 
+  // MOSTRAR PETICIONES
   else {
-    while (number_peticion != 0) {
-      std::cout << std::endl;
-      std::cout << "Peticiones: " << std::endl;
-      std::vector<int> peticiones_user = users_[pos].GetPetitionsCreadas();
-      for (int i {0}; i < peticiones_user.size(); i++) {
-        std::cout << "(" << peticiones_user[i]  << ") " << petitions_[peticiones_user[i]-1].get_titulo() << std::endl;
+
+    std::vector<int> peticiones_user = users_[pos].GetPetitionsCreadas();
+    ShowMyPet(petitions_, peticiones_user, 0);
+    int ch = 0;
+    int option{0}, choose{0};
+    init_keyboard();
+    while(ch != '\n'){
+      if(kbhit ()){
+        ch=readch(); 
+        if (ch == 65) {
+          --option;
+        } else if (ch == 66) {
+          ++option;
+        }
+        if(option < 0) option = 0;
+        if(option > peticiones_user.size()) option = peticiones_user.size();
+        std::system("clear");
+        choose = ShowMyPet(petitions_, peticiones_user, option); 
       }
+    }
+    close_keyboard();
+    std::system("clear");
+    if (option == 0) show_menu(*this, pos);
+    IndividualPetition(petitions_.at(choose), 0);
+    ch = 0;
+    int sign{0};
+    init_keyboard();
+    while(ch != '\n'){
+      if(kbhit ()){
+        ch=readch(); 
+        if (ch == 68) {
+          --sign;
+        } else if (ch == 67) {
+          ++sign;
+        }
+        if(sign < 0) sign = 0;
+        if(sign > 1) sign = 1;
+        std::system("clear");
+        IndividualPetition(petitions_.at(choose), sign); 
+      }
+    }
+    close_keyboard();
+    std::system("clear");
+    if (sign == 0) {
+      if (users_[pos].CheckPetitionSing(choose) != false) {
+        users_[pos].SingPetition(choose);
+        petitions_.at(choose).inc_firmar();
+        SignPetition(petitions_.at(choose), "Acabas de firmar esta peticion");
+      } 
+      else {
+        SignPetition(petitions_.at(choose), "Ya habias firmado esta peticion");
+      }
+    } else {
+      SignPetition(petitions_.at(choose), "");
+    }
+    ch = 0;
+    init_keyboard();
+    while(ch == 0){
+      if(kbhit ()){
+        ch=readch(); 
+      }
+    }
+    close_keyboard();
+    std::system("clear");
+    ShowMyPetitions(pos);
+    // while (number_peticion != 0) {
+    //   std::cout << std::endl;
+    //   std::cout << "Peticiones: " << std::endl;
+    //   // std::vector<int> peticiones_user = users_[pos].GetPetitionsCreadas();
+    //   for (int i {0}; i < peticiones_user.size(); i++) {
+    //     std::cout << "(" << peticiones_user[i]  << ") " << petitions_[peticiones_user[i]-1].get_titulo() << std::endl;
+    //   }
     
-      std::cout << "Indica el numero de la peticion a ver, o introducir 0 para volver atras: ";
-      std::cin >> number_peticion;
-      std::cout << std::endl;
+    //   std::cout << "Indica el numero de la peticion a ver, o introducir 0 para volver atras: ";
+    //   std::cin >> number_peticion;
+    //   std::cout << std::endl;
       
       
-      if (number_peticion != 0 && number_peticion <= petitions_.size()) {
-        //std::cout << petitions_[number_peticion-1] << std::endl;
-      }
-      std::cout << "Pulsa una tecla para continuar: ";
-      std::string esperar;
-      std::getline(std::cin, esperar);
-      std::getline(std::cin, esperar);
-      system("clear");
-    } 
+      // if (number_peticion != 0 && number_peticion <= petitions_.size()) {
+      //   //std::cout << petitions_[number_peticion-1] << std::endl;
+      // }
+      // std::cout << "Pulsa una tecla para continuar: ";
+      // std::string esperar;
+      // std::getline(std::cin, esperar);
+      // std::getline(std::cin, esperar);
+      // system("clear");
   }
 }
+// }
 void System::CreatePetition(int user) {
   std::string titulo{""}, descripcion{""};
 
@@ -257,9 +337,9 @@ void System::CreatePetition(int user) {
   std::string add = "echo peticion" + std::to_string(PID) + ".txt" + " >> ../BaseData/PETITIONS/petition_general.txt";
   std::system(add.c_str());
 
-  add = "echo " + titulo + ":" + descripcion + ":" + std::to_string(user) + ":0" + " >> ../BaseData/PETITIONS/peticion" + std::to_string(PID) + ".txt";
+  add = "echo " + titulo + ":" + descripcion + ":" + std::to_string(user) + ":0" + ":0" + " >> ../BaseData/PETITIONS/peticion" + std::to_string(PID) + ".txt";
   std::system(add.c_str());
-  petitions_.push_back(Petition(titulo, descripcion, 0, this->GetUsers().at(user).GetName()));
+  petitions_.push_back(Petition(titulo, descripcion, 0, this->GetUsers().at(user).GetName(), 0));
 
   users_[user].CreatePetition(PID);
   ch = 0;
@@ -274,4 +354,42 @@ void System::CreatePetition(int user) {
   close_keyboard();
   std::system("clear");
   show_menu(*this, user); 
+}
+
+
+
+void System::DonatePetition(int PID) {
+  int money;
+  std::cout << "Indica cantidad a donar en €: ";
+  std::cin >> money;
+  std::cout << std::endl;
+
+  int tarjeta;
+  std::cout << "Indica los digitos de la tarjeta de credito: ";
+  std::cin >> tarjeta;
+  std::cout << std::endl;
+
+  int caducidad;
+  std::cout << "Indica la fecha de caducidad de la tarjeta de credito: ";
+  std::cin >> caducidad;
+  std::cout << std::endl;
+
+  int cvv;
+  std::cout << "Indica el CVV de la tarjeta de credito: ";
+  std::cin >> cvv;
+  std::cout << std::endl;
+
+
+  std::cout << petitions_[PID-1].get_donation() << std::endl;
+  std::cout << money << std::endl;
+  money = petitions_[PID -1].get_donation() + money;
+  std::cout << money << std::endl;
+  petitions_[PID-1].set_donation(money);
+  std::cout << petitions_[PID-1].get_donation() << std::endl;
+  std::cout << "Muchas gracias por la donacion. \nAcabas de donar: " << money << "€ \nLa peticion ha recaudado: " << petitions_[PID-1].get_donation() << "€" << std::endl;
+}
+
+
+void System::SharePetition(int PID) {
+  std::cout << "https://dorf.es/petition" << PID << std::endl;
 }

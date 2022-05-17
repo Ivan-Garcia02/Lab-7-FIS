@@ -20,6 +20,7 @@ bool CheckUsername(const std::string&);
 bool CheckName(const std::string&);
 int CheckPassword(const std::string&, const std::string&);
 void AddWord(int, std::string&);
+void DONATE(System&);
 
 /// La funcion show_menu se cambio la implementancion a la clase user por el nombre ManagePetitions 
 void show_menu(System&, int);

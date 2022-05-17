@@ -387,7 +387,8 @@ void Register(System& system) {
   /// Necesidad de recargar el sistema
   std::string user_file{"../BaseData/users.txt"};
   std::string petitions_file{"../BaseData/PETITIONS/petition_general.txt"};
-  System reload{user_file, petitions_file};
+  std::string donations_file{"../BaseData/Donaciones.txt"};
+  System reload{user_file, petitions_file, donations_file};
   system = reload;
   
   /// Siguiente fase
@@ -483,7 +484,7 @@ void show_menu(System& system, int pos) {
         ++option;
       }
       if(option < 0) option = 0;
-      if(option > 4) option = 4;
+      if(option > 5) option = 5;
       std::system("clear");
       Menu(option); 
     }
@@ -491,20 +492,24 @@ void show_menu(System& system, int pos) {
   close_keyboard();
   std::system("clear");
   if (option == 0) {
+    ActualizarBaseDatos(system);
     Register_Login(system);
   } else if (option == 1) {
     system.ShowPetitions(pos);
   } else if (option == 2) {
-    
     system.CreatePetition(pos);
     std::string user_file{"../BaseData/users.txt"};
     std::string petitions_file{"../BaseData/PETITIONS/petition_general.txt"};
-    System update{user_file, petitions_file};
+    std::string donations_file{"../BaseData/Donaciones.txt"};
+    System update{user_file, petitions_file, donations_file};
     system = update;
   } else if (option == 3) {
     system.ShowMyPetitions(pos);
-  } else {
+  } else if (option == 4) {
     historia();
+  } else {
+    DONATE(system);
+    show_menu(system, pos);
   }
 }
 void ActualizarBaseDatos(System& system) {
@@ -545,29 +550,96 @@ void ActualizarBaseDatos(System& system) {
     for (j = 0; j < system.GetUsers().size(); j++) {
       if (system.GetUsers().at(j).GetName() == petition_aux.get_usuario()) break;
     }
-    add = "echo " + petition_aux.get_titulo() + ":" + petition_aux.get_descripcion() + ":" + std::to_string(j) + ":" + std::to_string(petition_aux.get_firmas()) + "> ../BaseData/PETITIONS/peticion" + std::to_string(i + 1) + ".txt";
+    add = "echo " + petition_aux.get_titulo() + ":" + petition_aux.get_descripcion() + ":" + std::to_string(j) + ":" + std::to_string(petition_aux.get_firmas()) + ":" + std::to_string(petition_aux.get_donation()) + "> ../BaseData/PETITIONS/peticion" + std::to_string(i + 1) + ".txt";
     std::system(add.c_str());
   }
 
+  // Actualizar donaciones
+  add = "echo " + std::to_string(system.GetCantidadDonada()) + "> ../BaseData/Donaciones.txt";
+  std::system(add.c_str());
+
 }
 void historia() {
-
-  std::string texto;
-  std::string linea;
-  std::string intro_file{"../BaseData/info_empresa.txt"};
-  std::ifstream archivo(intro_file);
-
-  while (getline(archivo, linea)) {
-    texto = texto + linea + "\n";
+  std::system("clear");
+  History();
+  int ch = 0;
+  init_keyboard();
+  while(ch == 0){
+    if(kbhit ()){
+      ch=readch(); 
+    }
   }
-  archivo.close();
+  close_keyboard();
+  std::system("clear");
+}
 
-  for (auto i : texto) {
-      std::cout << i;
+
+void DONATE(System& system) {
+  std::string money{""}, tarjeta{""}, fecha{""}, cvv{""};
+
+  /// INTRODUCIR cantidad
+  std::system("clear");
+  Cantidad(money);
+  int ch = 0;
+  init_keyboard();
+  while(ch != '\n'){
+    if(kbhit ()){
+      ch=readch();        
+      AddWord(ch, money);
+      std::system("clear");
+      Cantidad(money);
+    }
   }
-  std::cout << "Pulsa una tecla para continuar: ";
-  std::string esperar;
-  std::getline(std::cin, esperar);
-  std::getline(std::cin, esperar);
-  system("clear");
+  close_keyboard();
+  
+
+  /// INTRODUCIR tarjeta
+  std::system("clear");
+  Tarjeta(tarjeta);
+  ch = 0;
+  init_keyboard();
+  while(ch != '\n'){
+    if(kbhit ()){
+      ch=readch();        
+      AddWord(ch, tarjeta);
+      std::system("clear");
+      Tarjeta(tarjeta);
+    }
+  }
+  close_keyboard();
+
+  /// INTRODUCIR fecha
+  std::system("clear");
+  Fecha(fecha);
+  ch = 0;
+  init_keyboard();
+  while(ch != '\n'){
+    if(kbhit ()){
+      ch=readch();        
+      AddWord(ch, fecha);
+      std::system("clear");
+      Fecha(fecha);
+    }
+  }
+  close_keyboard();
+
+  /// INTRODUCIR CVV
+  std::system("clear");
+  CVV(cvv);
+  ch = 0;
+  init_keyboard();
+  while(ch != '\n'){
+    if(kbhit ()){
+      ch=readch();        
+      AddWord(ch, cvv);
+      std::system("clear");
+      CVV(cvv);
+    }
+  }
+  close_keyboard();
+
+  system.GetCantidadDonada() =  system.GetCantidadDonada() + std::stoi(money);
+  MensajeDonacion(system.GetCantidadDonada(), money);
+  sleep (3);
+  std::system("clear");
 }

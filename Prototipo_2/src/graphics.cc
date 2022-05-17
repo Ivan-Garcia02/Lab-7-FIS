@@ -2,6 +2,71 @@
 
 #include "graphics.h"
 
+void History(void) {
+  std::cout << "╔═════════════════════════════════════════════════════════╗\n" 
+               "║        NUESTRA HISTORIA NOS HACE SER COMO SOMOS         ║\n"
+               "║                  DEMOCRACIA EN ACCIÓN                   ║\n"
+               "╠═════════════════════════════════════════════════════════╣\n"
+               "║                                                         ║\n"
+               "║ Dorf nace de la necesidad de poder dotar de voz y hacer ║\n"
+               "║ partícipe en la toma de decisiones a la ciudadanía.     ║\n"
+               "║ Una manera sencilla y directa de hacer llegar las       ║\n"
+               "║ inquietudes y reclamaciones de los habitantes a sus     ║\n"
+               "║ respectivas administraciones.                           ║\n"
+               "║ El objetivo de la plataforma es ser la voz del          ║\n"
+               "║ ciudadano, por ello nace Dorf (pueblo, en alemán).      ║\n"
+               "║                                                         ║\n"
+               "║        Pulsa cualquier tecla para continuar...          ║\n"
+               "║                                                         ║\n"
+               "╚═════════════════════════════════════════════════════════╝\n";
+}
+
+void EmptyMyPet(void) {
+  std::cout << "╔════════════════════════════════════════════════════════╗\n" 
+               "║                      ELIJA OPCION                      ║\n"
+               "╠════════════════════════════════════════════════════════╣\n"
+               "║                                                        ║\n"
+               "║             No hay ninguna peticion creada             ║\n"
+               "║                                                        ║\n"
+               "║        Pulsa cualquier tecla para continuar...         ║\n"
+               "║                                                        ║\n"
+               "║                                                        ║\n"
+               "╚════════════════════════════════════════════════════════╝\n";
+}
+
+int ShowMyPet(std::vector<Petition>& petitions, std::vector<int>& peticiones_user, int option) {
+  int ret{0};
+  std::cout << "╔════════════════════════════════════════════════════════╗\n" 
+               "║                      ELIJA OPCION                      ║\n"
+               "╠════════════════════════════════════════════════════════╣\n"
+               "║                                                        ║\n";
+
+  std::string body{""};
+  if (option == 0) {
+    body =  "║ \033[7m0. Volver atrás programa\033[0m                               ║\n";
+  } else {
+    body =  "║ 0. Volver atrás programa                               ║\n";
+  }
+  for (int i = 0; i < peticiones_user.size(); i++) {
+    body += "║                                                        ║\n";
+    if (option == (i + 1)) {
+      body = body + "║ " + "\033[7m" + std::to_string(peticiones_user.at(i) + 1) + ". " + petitions.at(peticiones_user[i]-1).get_titulo() + "\033[0m";      
+      ret = option;
+    } else {
+      body = body + "║ " + std::to_string(peticiones_user.at(i) + 1) + ". " + petitions.at(peticiones_user[i]-1).get_titulo();   
+    }
+    for (int j = petitions.at(peticiones_user[i]-1).get_titulo().size(); j < 52; j++) {
+      body += " ";
+    }
+    body += "║\n"; 
+  }
+  std::cout << body;             
+  std::cout << "║                                                        ║\n"
+               "║                                                        ║\n"
+               "╚════════════════════════════════════════════════════════╝\n";
+  return ret;
+}
+
 void WaitCreatePet() {
   std::cout << "╔════════════════════════════════════════════════════════╗\n" 
                "║                     CREAR PETICION                     ║\n"
@@ -14,6 +79,7 @@ void WaitCreatePet() {
                "║                                                        ║\n"
                "╚════════════════════════════════════════════════════════╝\n";
 }
+
 void CreatePetDesc(const std::string& desc) {
   std::cout << "╔════════════════════════════════════════════════════════╗\n" 
                "║                     CREAR PETICION                     ║\n"
@@ -215,6 +281,8 @@ void Menu (int option) {
     body += "║ 3. Ver mis peticiones                                  ║\n";
     body += "║                                                        ║\n";
     body += "║ 4. Historia de la empresa                              ║\n";
+    body += "║                                                        ║\n";
+    body += "║ 5. Donar a la empresa                                  ║\n";
   } else if (option == 1) {
     body =  "║ 0. Cerrar sesion                                       ║\n";
     body += "║                                                        ║\n";
@@ -225,6 +293,8 @@ void Menu (int option) {
     body += "║ 3. Ver mis peticiones                                  ║\n";
     body += "║                                                        ║\n";
     body += "║ 4. Historia de la empresa                              ║\n";
+    body += "║                                                        ║\n";
+    body += "║ 5. Donar a la empresa                                  ║\n";
   } else if (option == 2) {
     body =  "║ 0. Cerrar sesion                                       ║\n";
     body += "║                                                        ║\n";
@@ -235,6 +305,8 @@ void Menu (int option) {
     body += "║ 3. Ver mis peticiones                                  ║\n";
     body += "║                                                        ║\n";
     body += "║ 4. Historia de la empresa                              ║\n";
+    body += "║                                                        ║\n";
+    body += "║ 5. Donar a la empresa                                  ║\n";
   } else if (option == 3) {
     body =  "║ 0. Cerrar sesion                                       ║\n";
     body += "║                                                        ║\n";
@@ -245,7 +317,9 @@ void Menu (int option) {
     body += "║ \033[7m3. Ver mis peticiones\033[0m                                  ║\n";
     body += "║                                                        ║\n";
     body += "║ 4. Historia de la empresa                              ║\n";
-  } else {
+    body += "║                                                        ║\n";
+    body += "║ 5. Donar a la empresa                                  ║\n";
+  } else if (option == 4) {
     body =  "║ 0. Cerrar sesion                                       ║\n";
     body += "║                                                        ║\n";
     body += "║ 1. Ver listado de peticiones                           ║\n";
@@ -255,6 +329,20 @@ void Menu (int option) {
     body += "║ 3. Ver mis peticiones                                  ║\n";
     body += "║                                                        ║\n";
     body += "║ \033[7m4. Historia de la empresa\033[0m                              ║\n";
+    body += "║                                                        ║\n";
+    body += "║ 5. Donar a la empresa                                  ║\n";
+  } else {
+    body =  "║ 0. Cerrar sesion                                       ║\n";
+    body += "║                                                        ║\n";
+    body += "║ 1. Ver listado de peticiones                           ║\n";
+    body += "║                                                        ║\n";
+    body += "║ 2. Crear peticion                                      ║\n";
+    body += "║                                                        ║\n";
+    body += "║ 3. Ver mis peticiones                                  ║\n";
+    body += "║                                                        ║\n";
+    body += "║ 4. Historia de la empresa                              ║\n";
+    body += "║                                                        ║\n";
+    body += "║ \033[7m5. Donar a la empresa\033[0m                                  ║\n";
   }
 
   std::cout << body;             
@@ -525,4 +613,110 @@ int readch() {
   }
   read (0, &ch, 1);
   return ch;
+}
+
+
+void Cantidad (const std::string& cantidad) {
+  std::cout << "╔════════════════════════════════════════════════════════╗\n" 
+               "║                         DONAR                          ║\n"
+               "╠════════════════════════════════════════════════════════╣\n"
+               "║                                                        ║\n";
+  std::string body = "║ Cantidad a donar: ";
+  body += cantidad;
+  for (int i = cantidad.size(); i < 37; i++) {
+    body += " ";
+  }
+  body += "║\n";
+  
+  std::cout << body;
+  std::cout << "║                                                        ║\n"
+               "║                                                        ║\n"
+               "║                                                        ║\n"
+               "║                                                        ║\n"
+               "╚════════════════════════════════════════════════════════╝\n";
+}
+
+void Tarjeta (const std::string& tarjeta) {
+  std::cout << "╔════════════════════════════════════════════════════════╗\n" 
+               "║                         DONAR                          ║\n"
+               "╠════════════════════════════════════════════════════════╣\n"
+               "║                                                        ║\n";
+  std::string body = "║ Numero de la tarjeta: ";
+  body += tarjeta;
+  for (int i = tarjeta.size(); i < 33; i++) {
+    body += " ";
+  }
+  body += "║\n";
+  
+  std::cout << body;
+  std::cout << "║                                                        ║\n"
+               "║                                                        ║\n"
+               "║                                                        ║\n"
+               "║                                                        ║\n"
+               "╚════════════════════════════════════════════════════════╝\n";
+}
+
+void Fecha (const std::string& fecha) {
+  std::cout << "╔════════════════════════════════════════════════════════╗\n" 
+               "║                         DONAR                          ║\n"
+               "╠════════════════════════════════════════════════════════╣\n"
+               "║                                                        ║\n";
+  std::string body = "║ Fecha caducidad: ";
+  body += fecha;
+  for (int i = fecha.size(); i < 38; i++) {
+    body += " ";
+  }
+  body += "║\n";
+  
+  std::cout << body;
+  std::cout << "║                                                        ║\n"
+               "║                                                        ║\n"
+               "║                                                        ║\n"
+               "║                                                        ║\n"
+               "╚════════════════════════════════════════════════════════╝\n";
+}
+
+void CVV (const std::string& cvv) {
+  std::cout << "╔════════════════════════════════════════════════════════╗\n" 
+               "║                         DONAR                          ║\n"
+               "╠════════════════════════════════════════════════════════╣\n"
+               "║                                                        ║\n";
+  std::string body = "║ CVV: ";
+  body += cvv;
+  for (int i = cvv.size(); i < 50; i++) {
+    body += " ";
+  }
+  body += "║\n";
+  std::cout << body;
+  
+  std::cout << "║                                                        ║\n"
+               "║                                                        ║\n"
+               "║                                                        ║\n"
+               "║                                                        ║\n"
+               "╚════════════════════════════════════════════════════════╝\n";
+}
+
+
+void MensajeDonacion(int cantidad_donada, const std::string& money) {
+  std::cout << "╔════════════════════════════════════════════════════════╗\n" 
+               "║                                                        ║\n"
+               "║ Muchas gracias por la donacion.                        ║\n";
+  std::string body = "║ Acabas de donar:";
+  body += money;
+  body += "€";
+  for (int i = money.size(); i < 38; i++) {
+    body += " ";
+  }
+  body += "║\n";
+  std::cout << body;
+  body = "║ Dorf ha recaudado:";
+  body += std::to_string(cantidad_donada);
+  body += "€";
+  for (int i = std::to_string(cantidad_donada).size(); i < 36; i++) {
+    body += " ";
+  }
+  body += "║\n";
+  std::cout << body;
+  std::cout << "║                                                        ║\n"
+               "╚════════════════════════════════════════════════════════╝\n";
 }
