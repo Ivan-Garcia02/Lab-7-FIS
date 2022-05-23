@@ -49,4 +49,7 @@ void Tarjeta(const std::string&);
 void Fecha(const std::string&);
 void CVV(const std::string&);
 void MensajeDonacion(int, const std::string&);
+void DonatePetGraphic(const Petition&, const std::string&, const std::string&, const std::string&, const std::string&);
+void Monesy(const Petition&, const std::string&);
+void Linkazo(const Petition&, const std::string&);
 #endif

@@ -141,6 +141,7 @@ void Login(System& system) {
 
   /// Siguiente fase
   int pos = system.UserPos(username);
+  std::system("clear");
   show_menu(system, pos);
   return;
 }
@@ -394,6 +395,7 @@ void Register(System& system) {
   /// Siguiente fase
   system.GetUsers();
   int pos = system.UserPos(username);
+  std::system("clear");
   show_menu(system, pos);
   return;
 }
@@ -507,6 +509,7 @@ void show_menu(System& system, int pos) {
     system.ShowMyPetitions(pos);
   } else if (option == 4) {
     historia();
+    show_menu(system, pos);
   } else {
     DONATE(system);
     show_menu(system, pos);

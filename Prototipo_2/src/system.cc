@@ -191,6 +191,8 @@ void System::ShowPetitions(int pos) {
   }
   close_keyboard();
   std::system("clear");
+  DonatePetition(option);
+  std::system("clear");
   ShowPetitions(pos);
 }
 void System::ShowMyPetitions(int pos) {
@@ -274,31 +276,12 @@ void System::ShowMyPetitions(int pos) {
     }
     close_keyboard();
     std::system("clear");
+    DonatePetition(option);
+    std::system("clear");
     ShowMyPetitions(pos);
-    // while (number_peticion != 0) {
-    //   std::cout << std::endl;
-    //   std::cout << "Peticiones: " << std::endl;
-    //   // std::vector<int> peticiones_user = users_[pos].GetPetitionsCreadas();
-    //   for (int i {0}; i < peticiones_user.size(); i++) {
-    //     std::cout << "(" << peticiones_user[i]  << ") " << petitions_[peticiones_user[i]-1].get_titulo() << std::endl;
-    //   }
-    
-    //   std::cout << "Indica el numero de la peticion a ver, o introducir 0 para volver atras: ";
-    //   std::cin >> number_peticion;
-    //   std::cout << std::endl;
-      
-      
-      // if (number_peticion != 0 && number_peticion <= petitions_.size()) {
-      //   //std::cout << petitions_[number_peticion-1] << std::endl;
-      // }
-      // std::cout << "Pulsa una tecla para continuar: ";
-      // std::string esperar;
-      // std::getline(std::cin, esperar);
-      // std::getline(std::cin, esperar);
-      // system("clear");
   }
 }
-// }
+
 void System::CreatePetition(int user) {
   std::string titulo{""}, descripcion{""};
 
@@ -326,7 +309,7 @@ void System::CreatePetition(int user) {
     if(kbhit ()){
       ch=readch();        
       AddWord(ch, descripcion);
-      std::system("clear");
+      std::system("clear");std::system("clear");
       CreatePetDesc(descripcion);
     }
   }
@@ -359,37 +342,88 @@ void System::CreatePetition(int user) {
 
 
 void System::DonatePetition(int PID) {
-  int money;
-  std::cout << "Indica cantidad a donar en €: ";
-  std::cin >> money;
-  std::cout << std::endl;
+  //int money;
+  DonatePetGraphic(petitions_[PID-1], "","","","");
+  std::string money, tarjeta, caduc, cvv;
+  int ch = 0;
+  init_keyboard();
+  while(ch != '\n'){
+    if(kbhit ()){
+      ch=readch();        
+      AddWord(ch, money);
+      std::system("clear");
+      DonatePetGraphic(petitions_[PID-1], money,"","","");
+    }
+  }
+  close_keyboard();
 
-  int tarjeta;
-  std::cout << "Indica los digitos de la tarjeta de credito: ";
-  std::cin >> tarjeta;
-  std::cout << std::endl;
+  ch = 0;
+  init_keyboard();
+  while(ch != '\n'){
+    if(kbhit ()){
+      ch=readch();        
+      AddWord(ch, tarjeta);
+      std::system("clear");
+      DonatePetGraphic(petitions_[PID-1], money,tarjeta,"","");
+    }
+  }
+  close_keyboard();
 
-  int caducidad;
-  std::cout << "Indica la fecha de caducidad de la tarjeta de credito: ";
-  std::cin >> caducidad;
-  std::cout << std::endl;
+  ch = 0;
+  init_keyboard();
+  while(ch != '\n'){
+    if(kbhit ()){
+      ch=readch();        
+      AddWord(ch, caduc);
+      std::system("clear");
+      DonatePetGraphic(petitions_[PID-1], money,tarjeta,caduc,"");
+    }
+  }
+  close_keyboard();
 
-  int cvv;
-  std::cout << "Indica el CVV de la tarjeta de credito: ";
-  std::cin >> cvv;
-  std::cout << std::endl;
+  ch = 0;
+  init_keyboard();
+  while(ch != '\n'){
+    if(kbhit ()){
+      ch=readch();        
+      AddWord(ch, cvv);
+      std::system("clear");
+      DonatePetGraphic(petitions_[PID-1], money,tarjeta,caduc,cvv);
+    }
+  }
+  close_keyboard();
+
+  int dinero{std::stoi(money)}, tarjet{std::stoi(tarjeta)}, caducidad{std::stoi(caduc)}, vcc{std::stoi(cvv)};
+  std::system("clear");
 
 
-  std::cout << petitions_[PID-1].get_donation() << std::endl;
-  std::cout << money << std::endl;
-  money = petitions_[PID -1].get_donation() + money;
-  std::cout << money << std::endl;
-  petitions_[PID-1].set_donation(money);
-  std::cout << petitions_[PID-1].get_donation() << std::endl;
-  std::cout << "Muchas gracias por la donacion. \nAcabas de donar: " << money << "€ \nLa peticion ha recaudado: " << petitions_[PID-1].get_donation() << "€" << std::endl;
+  dinero = petitions_[PID -1].get_donation() + dinero;
+  petitions_[PID-1].set_donation(dinero);
+  Monesy(petitions_[PID-1], money);
+  ch = 0;
+  init_keyboard();
+  while(ch == 0){
+    if(kbhit ()){
+      ch=readch(); 
+    }
+  }
+  close_keyboard();
+  std::system("clear");
+  SharePetition(PID);
+  return;
 }
 
 
 void System::SharePetition(int PID) {
-  std::cout << "https://dorf.es/petition" << PID << std::endl;
+  Linkazo(petitions_[PID -1], std::to_string(PID));
+  int ch = 0;
+  init_keyboard();
+  while(ch == 0){
+    if(kbhit ()){
+      ch=readch(); 
+    }
+  }
+  close_keyboard();
+  std::system("clear");
+  return;
 }

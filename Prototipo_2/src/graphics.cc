@@ -2,6 +2,122 @@
 
 #include "graphics.h"
 
+
+// void SignPetition(const Petition& petition, const std::string& message) {
+//   std::cout << "╔════════════════════════════════════════════════════════╗\n║";
+//   int mid{(55 - int(petition.get_titulo().size())) / 2};
+//   for (int i = 0; i < mid; i++) {
+//     std::cout << " ";
+//   }
+// }
+void Linkazo(const Petition& petition, const std::string& pid) {
+  std::cout << "╔════════════════════════════════════════════════════════╗\n║";
+  int mid{(55 - int(petition.get_titulo().size())) / 2};
+  for (int i = 0; i < mid; i++) {
+    std::cout << " ";
+  }
+  std::cout << petition.get_titulo();
+  for (int i = mid + petition.get_titulo().size(); i <= 55; i++) {
+    std::cout << " ";
+  }
+  std::cout << "║\n╠════════════════════════════════════════════════════════╣\n"
+                  "║                                                        ║\n"
+                  "║ https://dorf.es/petition" << pid;
+  for (int i = pid.size(); i <= 30; i++) {
+    std::cout << " ";
+  }
+  std::cout << "║\n";
+  std::cout << "║                                                        ║\n"
+               "║        Pulsa cualquier tecla para continuar...         ║\n"
+               "║                                                        ║\n"
+               "║                                                        ║\n"
+               "╚════════════════════════════════════════════════════════╝\n";
+}
+void Monesy(const Petition& petition, const std::string& money) {
+  std::cout << "╔════════════════════════════════════════════════════════╗\n║";
+  int mid{(55 - int(petition.get_titulo().size())) / 2};
+  for (int i = 0; i < mid; i++) {
+    std::cout << " ";
+  }
+  std::cout << petition.get_titulo();
+  for (int i = mid + petition.get_titulo().size(); i <= 55; i++) {
+    std::cout << " ";
+  }
+  std::cout << "║\n╠════════════════════════════════════════════════════════╣\n"
+                  "║                                                        ║\n"
+                  "║ Muchas gracias por la donacion                         ║\n"
+                  "║ Acabas de donar: " << money << "€";
+  for (int i = money.size(); i <= 36; i++) {
+    std::cout << " ";
+  }
+  std::cout << "║\n";
+  std::cout << "║ La peticion ha recaudado: " << std::to_string(petition.get_donation()) << "€";
+  int size{0}, pet{petition.get_donation()};
+  while(pet != 0) {
+    ++size;
+    pet /= 10;
+  }
+  for (int i = size; i <= 27; i++) {
+    std::cout << " ";
+  }
+  std::cout << "║\n";
+  std::cout << "║                                                        ║\n"
+               "║        Pulsa cualquier tecla para continuar...         ║\n"
+               "║                                                        ║\n"
+               "║                                                        ║\n"
+               "╚════════════════════════════════════════════════════════╝\n";
+}
+
+
+void DonatePetGraphic(const Petition& petition, const std::string& money, const std::string& tarjeta, const std::string& caduc, const std::string& cvv) {
+  std::cout << "╔════════════════════════════════════════════════════════╗\n║";
+  int mid{(55 - int(petition.get_titulo().size())) / 2};
+  for (int i = 0; i < mid; i++) {
+    std::cout << " ";
+  }
+  std::cout << petition.get_titulo();
+  for (int i = mid + petition.get_titulo().size(); i <= 55; i++) {
+    std::cout << " ";
+  }
+  std::cout << "║\n╠════════════════════════════════════════════════════════╣\n"
+                  "║                                                        ║\n║";
+  
+
+  std::cout << " Cantidad a donar en €: " << money;
+  for (int i = money.size(); i <= 31; i++) {
+    std::cout << " ";
+  }
+  std::cout << "║\n║                                                        ║\n║";
+
+
+  std::cout << " Digitos de la tarjeta: " << tarjeta;
+  for (int i = tarjeta.size(); i <= 31; i++) {
+    std::cout << " ";
+  }
+  std::cout << "║\n║                                                        ║\n║";
+
+
+  std::cout << " Caducidad de la tarjeta: " << caduc;
+  for (int i = caduc.size(); i <= 29; i++) {
+    std::cout << " ";
+  }
+  std::cout << "║\n║                                                        ║\n║";
+
+
+  std::cout << " CVV de la tarjeta: " << cvv;
+  for (int i = cvv.size(); i <= 35; i++) {
+    std::cout << " ";
+  }
+  std::cout << "║\n";
+
+  std::cout << "║                                                        ║\n"
+               "║                                                        ║\n"
+               "╚════════════════════════════════════════════════════════╝\n";
+
+
+}
+
+
 void History(void) {
   std::cout << "╔═════════════════════════════════════════════════════════╗\n" 
                "║        NUESTRA HISTORIA NOS HACE SER COMO SOMOS         ║\n"
